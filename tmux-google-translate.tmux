@@ -8,19 +8,18 @@ generate_cmd() {
 
   if cmd_exists "$cmd"; then
     cmd="$(cmd_path "trans")"
-    echo "xargs -I {} tmux split-window -l 10 '$cmd \"{}\" > /dev/null | less -R'"
+    echo "xargs -I {} tmux split-window -l 10 '$cmd :zh \"{}\" > /dev/null | less -R'"
   else
     display_msg "Please make sure translate-shell is installed."
   fi
 }
 
-readonly translate_shell_key="$(get_tmux_option "@translate-shell-key" "t")"
-readonly translate_copy_key=$(get_tmux_option "@translate-copy-key" "T")
+readonly translate_shell_key="$(get_tmux_option "@translate-shell-key" "x")"
+readonly translate_copy_key=$(get_tmux_option "@translate-copy-key" "X")
 readonly translate_cmd="$(generate_cmd "trans")"
 
 # copy mode
-tmux bind-key -t vi-copy    "$translate_copy_key" copy-pipe "$translate_cmd"
-tmux bind-key -t emacs-copy "$translate_copy_key" copy-pipe "$translate_cmd"
+tmux bind-key -T copy-mode-vi "$translate_copy_key" send -X copy-pipe "$translate_cmd"
 # normal
 tmux bind-key "$translate_shell_key" split-window -l 10 "$(cmd_path "trans") -shell"
 
