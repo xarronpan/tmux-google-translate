@@ -14,7 +14,7 @@ generate_cmd() {
   fi
 }
 
-readonly translate_shell_key="$(get_tmux_option "@translate-shell-key" "x")"
+readonly translate_shell_key="$(get_tmux_option "@translate-shell-key" "X")"
 readonly translate_copy_key=$(get_tmux_option "@translate-copy-key" "X")
 readonly translate_cmd="$(generate_cmd "trans")"
 
